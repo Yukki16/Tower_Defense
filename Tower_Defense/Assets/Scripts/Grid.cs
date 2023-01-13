@@ -34,6 +34,7 @@ public static class Grid
 
     public static void CreatePath(int[,] grid, GameObject[] pathObjects, Vector2 startPosition, int cellSize)
     {
+        GameObject groundParent = new GameObject("Ground");
         NavMeshSurface surface = null;
         for (int i = 0; i < grid.GetLength(0); i++)
         {
@@ -43,10 +44,12 @@ public static class Grid
                 {
                     GameObject temp = GameObject.Instantiate(pathObjects[0], new Vector3(startPosition.x + i, 0, startPosition.y + j) * cellSize, new Quaternion());
                     surface = temp.GetComponentInChildren<NavMeshSurface>();
+                    temp.transform.parent = groundParent.transform;
                 }
                 else
                 {
                     GameObject temp = GameObject.Instantiate(pathObjects[1], new Vector3(startPosition.x + i, 0, startPosition.y + j) * cellSize, new Quaternion());
+                    temp.transform.parent = groundParent.transform;
                 }
 
             }

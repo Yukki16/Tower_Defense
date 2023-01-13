@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 72797991}
   - component: {fileID: 72797990}
   m_Layer: 0
-  m_Name: TestScripts
+  m_Name: Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,6 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9066234040419df4293de6406127f1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startPosition: {x: 0, y: 0}
+  endPosition: {x: 9, y: 5}
+  lenghtOfGrid: {x: 10, y: 10}
+  gridSize: 10
   paths:
   - {fileID: 2688141612273158699, guid: d3b271e4432dae4498613b4d73355248, type: 3}
   - {fileID: 8654326403382164749, guid: b4317b3b1558eb34aad40ec1ec8271cb, type: 3}

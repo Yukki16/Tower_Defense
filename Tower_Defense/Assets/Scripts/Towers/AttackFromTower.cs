@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.AI;
 
 public class AttackFromTower : MonoBehaviour
 {
@@ -18,25 +19,28 @@ public class AttackFromTower : MonoBehaviour
         tower = this.transform.parent.GetComponent<Tower>();
     }
 
-    private UnityAction EnemyDies(Enemy enemy)
+    private void EnemyDies(Enemy enemy)
     {
-        Debug.Log("StopedCoroutine");
-        targets.Remove(enemy.gameObject);
-        if(attackCoroutine != null)
-        tower.StopCoroutine(attackCoroutine);
-
-        if (targets.Count != 0)
+        if (enemy.health < 0)
         {
-            attackCoroutine = tower.StartCoroutine(tower.Attack(targets[0].gameObject));
-        }
-        else
-        {
-            isAttacking = false;
+            Debug.Log("StopedCoroutine");
+            targets.Remove(enemy.gameObject);
+            if (attackCoroutine != null)
+                tower.StopCoroutine(attackCoroutine);
+
+            if (targets.Count != 0)
+            {
+                attackCoroutine = tower.StartCoroutine(tower.Attack(targets));
+            }
+            else
+            {
+                isAttacking = false;
+            }
+
+            //Observer.onEnemyDeathEvent.RemoveListener(EnemyDies(enemy));
         }
 
-        Observer.onEnemyDeathEvent.AddListener(EnemyDies(enemy));
-
-        return null;
+        //return null;
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -47,9 +51,9 @@ public class AttackFromTower : MonoBehaviour
             targets.Add(other.gameObject);
             if (!isAttacking)
             {
-                Observer.onEnemyDeathEvent.AddListener(EnemyDies(other.gameObject.GetComponent<Enemy>()));
-                attackCoroutine = tower.StartCoroutine(tower.Attack(targets[0].gameObject));
-                Debug.Log("Attack enemy 1");
+                Observer.onEnemyDeath += EnemyDies;
+                attackCoroutine = tower.StartCoroutine(tower.Attack(targets));
+                //Debug.Log("Attack enemy 1");
                 isAttacking = true;
             }
         }
@@ -57,7 +61,12 @@ public class AttackFromTower : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Observer.onEnemyDeathEvent.RemoveListener(EnemyDies(other.gameObject.GetComponent<Enemy>()));
+        other.gameObject.GetComponent<NavMeshAgent>().speed = other.gameObject.GetComponent<Enemy>().speed;
+        if (other.gameObject.GetComponent<Enemy>() != null)
+        {
+            //Debug.Log(other.gameObject.TryGetComponent<Enemy>(out Enemy enemy));
+            Observer.onEnemyDeath -= EnemyDies;
+        }
         enemyNumber--;
         if(attackCoroutine != null)
         tower.StopCoroutine(attackCoroutine);
@@ -65,7 +74,7 @@ public class AttackFromTower : MonoBehaviour
         targets.Remove(other.gameObject);
         if(targets.Count != 0)
         {
-            attackCoroutine = tower.StartCoroutine(tower.Attack(targets[0].gameObject));
+            attackCoroutine = tower.StartCoroutine(tower.Attack(targets));
         }
         else
         {

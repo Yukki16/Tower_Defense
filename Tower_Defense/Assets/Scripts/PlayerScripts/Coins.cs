@@ -12,5 +12,6 @@ public class Coins : MonoBehaviour
     {
         coinsAmmount += coinsToAdd;
         coinsText.text = "Coins: " + coinsAmmount.ToString();
+        Observer.onCoinChange?.Invoke();
     }
 }

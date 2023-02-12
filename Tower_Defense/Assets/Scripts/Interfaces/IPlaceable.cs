@@ -9,10 +9,5 @@ public interface IPlaceable
     void Sell();
 
     int buildingCost { get; set; }
-    int upgradeCostDamage { get; set; }
-
-    int upgradeCostSpeed { get; set; }
-
-    int sellValue { get; set; } 
 
 }

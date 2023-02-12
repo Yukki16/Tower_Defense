@@ -10,51 +10,31 @@ public abstract class Tower : MonoBehaviour, IPlaceable
     public float damage;
     public float attackSpeed;
 
+    public int upgradeCostDamage;
+
+    public int upgradeCostSpeed;
+    public float sellValue;
     public int buildingCost
     {
         get { return stats.buildingCost; }
         set { }
     }
 
-    public int upgradeCostDamage { 
-        get
-        {
-            return stats.upgradeCostDamage;
-        }
-        set{ }
-    }
 
-    public int upgradeCostSpeed
+    private void OnEnable()
     {
-        get
-        {
-            return stats.upgradeCostSpeed;
-        }
-        set { }
+        upgradeCostDamage = stats.upgradeCostDamage;
+        upgradeCostSpeed = stats.upgradeCostSpeed;
+        sellValue = (buildingCost / 100) * 70;
     }
-
-    public int sellValue
-    {
-        get
-        {
-            return (stats.buildingCost /100) * 70;
-        }
-        set{ }
-    }
-
-
-    private void Start()
-    {
-    }
-
-    void IPlaceable.UpgradeDamage()
+    public void UpgradeDamage()
     {
         damage += stats.damageUpgradeValue;
         sellValue += (upgradeCostDamage / 100) * 70;
         upgradeCostDamage += (upgradeCostDamage / 100) * 20;
     }
 
-    void IPlaceable.UpgradeAS()
+    public void UpgradeAS()
     {
         if(attackSpeed <= 1)
         {
@@ -70,14 +50,14 @@ public abstract class Tower : MonoBehaviour, IPlaceable
         }
     }
 
-    void IPlaceable.Sell()
+    public void Sell()
     {
-        Player.Instance.Coins.UpdateCoins(sellValue);
+        Player.Instance.Coins.UpdateCoins((int)sellValue);
         Destroy(gameObject);
     }
 
 
-    public virtual IEnumerator Attack(GameObject enemy)
+    public virtual IEnumerator Attack(List<GameObject> enemies)
     {
         yield break;
     }

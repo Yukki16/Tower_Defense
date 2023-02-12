@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 8
   defence: 0
-  gold: 0
+  gold: 120
   speed: 7
   enemyColor: {r: 0.24644002, g: 0.6607163, b: 0.735849, a: 0}

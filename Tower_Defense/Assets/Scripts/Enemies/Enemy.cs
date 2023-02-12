@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.Events;
 
@@ -9,11 +10,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] EnemyStats stats;
 
     public float health;
-    float speed;
+    public float speed;
 
     public int goldDrop;
 
     public NavMeshAgent agent;
+
+    [SerializeField] GameObject canvasHP;
+    [SerializeField] Slider HPSlider;
     private void OnEnable()
     {
         agent = this.GetComponent<NavMeshAgent>();
@@ -25,30 +29,38 @@ public class Enemy : MonoBehaviour
         speed = stats.speed;
         goldDrop = stats.gold;
 
-        Observer.onEnemyDeathEvent.AddListener(Death());
+        HPSlider.value = health / stats.health;
+
+        Observer.onEnemyDeath += Death;
+
 
         //Debug.Log(health);
     }
 
     private void OnDisable()
     {
-        Observer.onEnemyDeathEvent.RemoveListener(Death());
+        Observer.onEnemyDeath -= Death;
     }
     public void TakeDamage(float damage)
     {
         //Debug.Log("Health: " + health);
         //Debug.Log("Damage: " + damage);
         health -= damage;
-        //Debug.Log(health);
+        HPSlider.value = health / stats.health;
+        Debug.Log(health);
         if(health <= 0)
         {
-            Observer.onEnemyDeathEvent?.Invoke();
+            Observer.onEnemyDeath?.Invoke(this);
         }
     }
 
     private void Update()
     {
         ArrivedAtTarget();
+        if(canvasHP != null)
+        {
+            canvasHP.transform.LookAt(Camera.main.transform);
+        }
     }
     void ArrivedAtTarget()
     {
@@ -60,18 +72,19 @@ public class Enemy : MonoBehaviour
                 this.gameObject.SetActive(false);
                 Player.Instance.HP.UpdateHP();
                 Debug.Log("Enemy entered castle");
+                Destroy(this.gameObject, 1);
             }
         }
     }
-    private UnityAction Death()
+    private void Death(Enemy enemy)
     {
         if (health <= 0)
         {
             Player.Instance.Coins.UpdateCoins(goldDrop);
-            this.gameObject.SetActive(false);
+            enemy.gameObject.SetActive(false);
             Destroy(this.gameObject, 1);
         }
-        return null;
+        //return null;
     }
 
 }

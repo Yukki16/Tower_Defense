@@ -9,6 +9,7 @@ public class HP : MonoBehaviour
     public int hp = 1;
 
     public TMP_Text hpText;
+    [SerializeField] TMP_Text endText;
 
     private void Update()
     {
@@ -25,8 +26,11 @@ public class HP : MonoBehaviour
             a[i].StopAllCoroutines();
         }
 
-        Observer.onEnemyDeathEvent.RemoveAllListeners();
+        Observer.onEnemyDeath = null;
         Observer.onPlayerDeath = null;
+
+        endText.text = "Game Over!";
+        endText.gameObject.SetActive(true);
 
         Debug.Log("Ended Game!");
     }

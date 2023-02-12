@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerType: AOE
   damage: 2
-  attackSpeed: 9
+  attackSpeed: 11
   buildingCost: 150
   upgradeCostDamage: 300
   upgradeCostSpeed: 200

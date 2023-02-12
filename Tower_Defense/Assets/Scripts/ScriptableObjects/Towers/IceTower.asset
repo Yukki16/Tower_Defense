@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: IceTower
   m_EditorClassIdentifier: 
   towerType: IceTower
-  damage: 1
+  damage: 4.5
   attackSpeed: 10
   buildingCost: 125
   upgradeCostDamage: 200
   upgradeCostSpeed: 150
-  damageUpgradeValue: 0.5
-  attackSpeedUpgradeValue: 0
+  damageUpgradeValue: -0.3
+  attackSpeedUpgradeValue: -1

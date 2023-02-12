@@ -11,19 +11,26 @@ public class ArcherTower : Tower
         damage = stats.damage;
         attackSpeed = stats.attackSpeed;
     }
-    public override IEnumerator Attack(GameObject enemy)
+    public override IEnumerator Attack(List<GameObject> enemies)
     {
-        if(!enemy.activeSelf)
+        if(enemies.Count == 0)
         {
             yield break;
         }
-        Debug.Log(enemy.gameObject.name);
+        //Debug.Log(enemy.gameObject.name);
         yield return new WaitForSeconds(attackSpeed / 10.0f);
-        if (enemy != null)
+        if (enemies != null)
         {
-            Enemy enemyScript = enemy.GetComponent<Enemy>();
-            enemyScript.TakeDamage(damage);
-            attackCollider.attackCoroutine = StartCoroutine(Attack(enemy));
+            Enemy enemyScript = enemies[0].GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.TakeDamage(damage);
+            }
+            else
+            {
+                yield break;
+            }
+            attackCollider.attackCoroutine = StartCoroutine(Attack(enemies));
         }
     }
 

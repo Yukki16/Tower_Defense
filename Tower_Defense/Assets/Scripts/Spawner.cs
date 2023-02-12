@@ -16,6 +16,7 @@ public class Spawner : MonoBehaviour
 
     [SerializeField] TMP_Text waveText;
     [SerializeField] TMP_Text timeRemaining;
+    [SerializeField] TMP_Text winText;
 
     int countdown;
 
@@ -30,6 +31,12 @@ public class Spawner : MonoBehaviour
 
     IEnumerator SpawnEntities()
     {
+        if(waveCounter == 1)
+        {
+            countdown = 15;
+            StartCoroutine(CountDown());
+            yield return new WaitForSecondsRealtime(15f);
+        }
         if (waveCounter <= spawns.numberOfWaves)
         {
             for (int i = 0; i < waveSize; i++)
@@ -48,6 +55,11 @@ public class Spawner : MonoBehaviour
         }
         else
         {
+            if (Player.Instance.HP.hp > 0)
+            {
+                winText.text = "You Won!";
+                winText.gameObject.SetActive(true);
+            }
             Debug.Log("WAVES ENDED");
             yield break;
         }

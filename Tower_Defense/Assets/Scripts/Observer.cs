@@ -5,7 +5,11 @@ using UnityEngine.Events;
 
 public static class Observer 
 {
-    public static UnityEvent onEnemyDeathEvent = new UnityEvent();
+    public delegate void OnEnemyDeathEvent(Enemy enemy);
+    public static OnEnemyDeathEvent onEnemyDeath;
+
+    public delegate void OnCoinChange();
+    public static OnCoinChange onCoinChange;
 
     public delegate void OnPlayerDeath();
     public static OnPlayerDeath onPlayerDeath;

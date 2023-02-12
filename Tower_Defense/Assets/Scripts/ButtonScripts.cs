@@ -23,7 +23,11 @@ public class ButtonScripts : MonoBehaviour
     GameObject buildingCopy;
     private void OnEnable()
     {
-        Observer.onEnemyDeathEvent.AddListener(DEButtons);
+        Observer.onCoinChange += DEButtons;
+    }
+    private void OnDisable()
+    {
+        Observer.onCoinChange -= DEButtons;
     }
 
     void DEButtons()
@@ -100,6 +104,7 @@ public class ButtonScripts : MonoBehaviour
             towerAtackSpeed.text = "Attack speed: Null";
 
             hasBuilding = false;
+            DEButtons();
             //building = copy;
         }
         if (ground.building != null)
@@ -123,52 +128,52 @@ public class ButtonScripts : MonoBehaviour
 
             hasBuilding = true;
             buildingCopy = ground.building;
+            DEButtons();
         }
     }
 
     private UnityAction BuildArcherTower(ref Ground ground)
     {
         ground.building = Instantiate(Resources.Load("Prefabs/Archer Tower") as GameObject, ground.parentTransform.transform);
+        Player.Instance.Coins.UpdateCoins(-ground.building.GetComponentInChildren<Tower>().stats.buildingCost);
         UpdateButtons(ground);
         return null;
     }
     private UnityAction BuildAOETower(ref Ground ground)
     {
-        ground.building = Instantiate(Resources.Load("Prefabs/Archer Tower") as GameObject, ground.parentTransform.transform);
+        ground.building = Instantiate(Resources.Load("Prefabs/AOE") as GameObject, ground.parentTransform.transform);
+        Player.Instance.Coins.UpdateCoins(-ground.building.GetComponentInChildren<Tower>().stats.buildingCost);
         UpdateButtons(ground);
         return null;
     }
 
     private UnityAction BuildIceTower(ref Ground ground)
     {
-        ground.building = Instantiate(Resources.Load("Prefabs/Archer Tower") as GameObject, ground.parentTransform.transform);
+        ground.building = Instantiate(Resources.Load("Prefabs/IceTower") as GameObject, ground.parentTransform.transform);
+        Player.Instance.Coins.UpdateCoins(-ground.building.GetComponentInChildren<Tower>().stats.buildingCost);
         UpdateButtons(ground);
         return null;
     }
 
     private UnityAction UpgradeStrenght(ref Ground ground)
     {
-        if(ground.building.TryGetComponent(out IPlaceable placeable))
-        {
-            placeable.UpgradeDamage();
-        }
+        Player.Instance.Coins.UpdateCoins(-ground.building.GetComponentInChildren<Tower>().upgradeCostDamage);
+        ground.building.GetComponentInChildren<Tower>().UpgradeDamage();
+        UpdateButtons(ground);
         return null;
     }
 
     private UnityAction UpgradeAS(ref Ground ground)
     {
-        if (ground.building.TryGetComponent(out IPlaceable placeable))
-        {
-            placeable.UpgradeAS();
-        }
+        Player.Instance.Coins.UpdateCoins(-ground.building.GetComponentInChildren<Tower>().upgradeCostSpeed);
+        ground.building.GetComponentInChildren<Tower>().UpgradeAS();
+        UpdateButtons(ground);
         return null;
     }
     private UnityAction Sell(ref Ground ground)
     {
-        if (ground.building.TryGetComponent(out IPlaceable placeable))
-        {
-            placeable.Sell();
-        }
+        ground.building.GetComponentInChildren<Tower>().Sell();
+        UpdateButtons(ground);
         return null;
     }
     public void ClosePanel(GameObject panel)

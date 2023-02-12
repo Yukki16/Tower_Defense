@@ -31,10 +31,10 @@ public class CameraMovement : MonoBehaviour
         {
             Camera.main.transform.position = Origin - Diference;
         }
-        //RESET CAMERA TO STARTING POSITION WITH RIGHT CLICK
+        /*//RESET CAMERA TO STARTING POSITION WITH RIGHT CLICK
         if (Input.GetMouseButton(1))
         {
             Camera.main.transform.position = ResetCamera;
-        }
+        }*/
     }
 }

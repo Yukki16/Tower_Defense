@@ -42,13 +42,13 @@ public static class Grid
             {
                 if (grid[i, j] == 1)
                 {
-                    GameObject temp = GameObject.Instantiate(pathObjects[0], new Vector3(startPosition.x + i, 0, startPosition.y + j) * cellSize, new Quaternion());
+                    GameObject temp = GameObject.Instantiate(pathObjects[0], new Vector3( i, 0,  j) * cellSize, new Quaternion());
                     surface = temp.GetComponentInChildren<NavMeshSurface>();
                     temp.transform.parent = groundParent.transform;
                 }
                 else
                 {
-                    GameObject temp = GameObject.Instantiate(pathObjects[1], new Vector3(startPosition.x + i, 0, startPosition.y + j) * cellSize, new Quaternion());
+                    GameObject temp = GameObject.Instantiate(pathObjects[1], new Vector3( i, 0, j) * cellSize, new Quaternion());
                     temp.transform.parent = groundParent.transform;
                 }
 
@@ -64,7 +64,7 @@ public static class Grid
         int randomValue = 0;
         while (!path.Equals(Vector2.zero))
         {
-            Debug.Log("Path: " + path.ToString());
+            //Debug.Log("Path: " + path.ToString());
             if (!finishedOneCoord)
             {
                 randomValue = Random.Range(0, 2);
@@ -84,7 +84,7 @@ public static class Grid
                             path.x--;
                             grid[(int)currentPos.x, (int)currentPos.y] = 1;
                         }
-                        Debug.Log(currentPos.ToString());
+                        //Debug.Log(currentPos.ToString());
                         break;
                     case 1:
                         if (path.y < 0)
@@ -99,7 +99,7 @@ public static class Grid
                             path.y--;
                             grid[(int)currentPos.x, (int)currentPos.y] = 1;
                         }
-                        Debug.Log(currentPos.ToString());
+                        //Debug.Log(currentPos.ToString());
                         break;
                 }
             }
@@ -119,7 +119,7 @@ public static class Grid
                         path.x--;
                         grid[(int)currentPos.x, (int)currentPos.y] = 1;
                     }
-                    Debug.Log(currentPos.ToString());
+                    //Debug.Log(currentPos.ToString());
                 }
 
                 if (path.y != 0)
@@ -136,7 +136,7 @@ public static class Grid
                         path.y--;
                         grid[(int)currentPos.x, (int)currentPos.y] = 1;
                     }
-                    Debug.Log(currentPos.ToString());
+                    //Debug.Log(currentPos.ToString());
                 }
             }
             if (path.x == 0 || path.y == 0)

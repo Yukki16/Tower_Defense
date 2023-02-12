@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class GroundManager : MonoBehaviour
 {
-    [SerializeField] Vector2 startPosition = Vector2.zero;
-    [SerializeField] Vector2 endPosition = new Vector2(9, 5);
-
-    [SerializeField] Vector2 lenghtOfGrid = new Vector2(10, 10);
-    [SerializeField] int gridSize = 10;
+    [SerializeField] GroundSpawn spawns;
     // Start is called before the first frame update
     [SerializeField] GameObject[] paths;
+
     void Start()
     {
-        Grid.GenerateGrid(startPosition, endPosition, lenghtOfGrid, gridSize, paths);
+        Grid.GenerateGrid(spawns.startPosition, spawns.endPosition, spawns.lenghtOfGrid, spawns.gridSize, paths);
     }
 
-
+    
 }
